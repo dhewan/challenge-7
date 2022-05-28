@@ -40,10 +40,17 @@ export default function SearchBody() {
   };
 
   const handleChange = (e) => {
+    if (e.target.name === "capacity" && (e.target.value < 0 || e.target.value === "")) {
+      setInputs({
+        ...inputs,
+        [e.target.name]: 0,
+      });
+    } else {
       setInputs({
         ...inputs,
         [e.target.name]: e.target.value,
       });
+    }
   };
   const cars = useSelector((state) => state.sliceReducer.data);
     return (
@@ -89,7 +96,7 @@ export default function SearchBody() {
           
           
           
-          
+          zz
         </div>
         <div class="dropdown">
           <p>Jumlah Penumpang(Opsional)</p>
