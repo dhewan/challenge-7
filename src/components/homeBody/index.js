@@ -1,6 +1,12 @@
 import React from 'react'
+import { useNavigate } from "react-router-dom";
 
 export default function HomeBody() {
+  let navigate = useNavigate();
+
+  function searchPage() {
+    navigate('/search');
+  }
     return (
         <div>
             <head>
@@ -10,7 +16,7 @@ export default function HomeBody() {
         <div class="header-kiri">
             <h1 class=" fw-bold lh-base mt-header-kiri1">Sewa & Rental Mobil Terbaik di kawasan (Lokasimu)</h1>
             <p >Selamat datang di Binar Car Rental. Kami menyediakan mobil kualitas terbaik dengan harga terjangkau. Selalu siap melayani kebutuhanmu untuk sewa mobil selama 24 jam.</p>
-            <button onclick="location.href='/search'" type="button" >Mulai Sewa Mobil</button>
+            <button onClick={searchPage} type="button" >Mulai Sewa Mobil</button>
         </div>
         <div class="header-kanan">
             <img src="assets/car.png" alt=''/>
@@ -136,7 +142,7 @@ export default function HomeBody() {
         <div class="banner ">
             <h2>Sewa Mobil di (Lokasimu) Sekarang</h2>
             <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. </p>
-            <button>Mulai Sewa Mobil</button>
+            <button  onClick={searchPage}>Mulai Sewa Mobil</button>
         </div>
     </div>
 
@@ -210,6 +216,7 @@ export default function HomeBody() {
               </div>
         </div>
     </div>
+    
         </div>
     )
 }

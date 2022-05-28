@@ -1,10 +1,18 @@
 import React from 'react'
+import { useNavigate } from 'react-router-dom';
+import Style from './style.module.css'
 
 export default function Navbar() {
+    let navigate = useNavigate();
+
+    function homePage() {
+      navigate('/');
+    }
+
     return (
         <nav class="navbar navbar-expand-lg navbar-light ">
         <div class="container-fluid p-0">
-        <a class="logo" href="#"></a>
+        <a class="logo"  onClick={homePage}></a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>

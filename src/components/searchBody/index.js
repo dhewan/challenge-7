@@ -1,6 +1,51 @@
-import React from 'react'
+import { useEffect, useState } from "react";
+import axios from "axios";
+import { useDispatch ,useSelector} from "react-redux";
+import { importCar, carsFilter } from "../../slicer";
+import Card from "../card"
 
 export default function SearchBody() {
+  const dispatch = useDispatch();
+
+  const getData = () => {
+    axios
+      .get("https://raw.githubusercontent.com/fnurhidayat/probable-garbanzo/main/data/cars.min.json")
+      .then((res) => {
+        dispatch(importCar(res.data));
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  useEffect(() => {
+    getData();
+  }, []);
+
+  const initialValue = {
+    driver: "",
+    date: "",
+    time: "",
+    capacity: 0,
+  };
+
+  const [inputs, setInputs] = useState(initialValue);
+
+  const handleSubmit = () => {
+    if(JSON.stringify(inputs) === JSON.stringify(initialValue)) {
+      getData();
+    } else {
+      dispatch(carsFilter(inputs));
+    }
+  };
+
+  const handleChange = (e) => {
+      setInputs({
+        ...inputs,
+        [e.target.name]: e.target.value,
+      });
+  };
+  const cars = useSelector((state) => state.sliceReducer.data);
     return (
 <div>
 <div class="header d-flex ">
@@ -9,7 +54,7 @@ export default function SearchBody() {
             <p >Selamat datang di Binar Car Rental. Kami menyediakan mobil kualitas terbaik dengan harga terjangkau. Selalu siap melayani kebutuhanmu untuk sewa mobil selama 24 jam.</p>
         </div>
         <div class="header-kanan">
-            <img src="assets/car.png" />
+            <img src="assets/car.png" alt=''/>
         </div>
         
     </div>
@@ -17,7 +62,7 @@ export default function SearchBody() {
       <div class="search-content">
         <div class="dropdown">
           <p>Pilih Tipe Driver</p>
-          <select class="form-select dropbtn" id="input1" aria-label="Default select example">
+          <select onChange={handleChange} class="form-select dropbtn" name="driver" placeholder="Pilih Tanggal ">
             <option selected>Pilih Tipe Driver</option>
             <option value="true">Dengan Sopir</option>
             <option value="false">Tanpa Sopir (Lepas Kunci)</option>
@@ -25,11 +70,11 @@ export default function SearchBody() {
         </div>
         <div class="dropdown">
           <p>Tanggal</p>
-          <input type="date" class="dropbtn" id="input2" placeholder="Pilih Tanggal "/>
+          <input type="date" class="dropbtn" id="input2" onChange={handleChange}  name="date"placeholder="Pilih Tanggal " value={inputs.date}/>
         </div>
         <div class="dropdown">
           <p>Waktu Jemput</p>
-          <select id="input3" class="form-select dropbtn" aria-label="Default select example">
+          <select id="input3" class="form-select dropbtn" onChange={handleChange} name="time" value={inputs.time} placeholder="Pilih waktu ">
             <option selected>Pilih Waktu</option>
             <option value="8">08.00 <p>WIB</p></option>
             <option value="9">09.00 <p>WIB</p></option>
@@ -48,8 +93,8 @@ export default function SearchBody() {
         </div>
         <div class="dropdown">
           <p>Jumlah Penumpang(Opsional)</p>
-          {/* <!-- <input class="dropbtn" id="input4" type="number" placeholder="Jumlah Penumpang"> --> */}
-          <select class="dropbtn" name="" id="input4">
+
+          <select class="dropbtn" onChange={handleChange} name="capacity" value={inputs.capacity}>
             <option value="0">Jumlah Penumpang</option>
             <option value="1">1</option>
             <option value="2">2</option>
@@ -59,13 +104,16 @@ export default function SearchBody() {
             <option value="6">6</option>
           </select>
         </div>
-      <button type="submit" class="button-search" id="submit">Cari Mobil</button>
+      <button type="submit" class="button-search" onClick={handleSubmit}>Cari Mobil</button>
       </div>
      
     </div>
 
     <div class="result-container">
       <div id="card-car" class="result">
+      {
+                   cars.map((item, index) => <Card key={index} product={item} />)
+               }
       </div>
     </div>
 </div>

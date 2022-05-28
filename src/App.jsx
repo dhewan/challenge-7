@@ -10,7 +10,6 @@ function App() {
         <BrowserRouter>
           <Routes>
             <Route  path="/search" element={<Search />}/>
-
             <Route  path="/" element={<Home />}/>
             
           </Routes>
